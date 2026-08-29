@@ -15,6 +15,7 @@ Run a quick manual test:
 import argparse
 import json
 import os
+import pathlib
 from typing import TypedDict, Optional
 
 import chromadb
@@ -27,7 +28,12 @@ from models import PatientProfile, TrialCandidate, TrialMatch
 
 load_dotenv()
 
-CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", "./data/chroma_db")
+_PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
+_env_chroma_path = os.getenv("CHROMA_DB_PATH", "./data/chroma_db")
+if _env_chroma_path.startswith("."):
+    CHROMA_DB_PATH = str((_PROJECT_ROOT / _env_chroma_path).resolve())
+else:
+    CHROMA_DB_PATH = _env_chroma_path
 COLLECTION_NAME = "clinical_trials"
 # Groq's free tier — llama-3.3-70b is strong for this kind of structured
 # reasoning task and comfortably fast enough for a portfolio demo.
