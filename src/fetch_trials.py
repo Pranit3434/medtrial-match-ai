@@ -1,14 +1,15 @@
 """
 Step 2: Explore the ClinicalTrials.gov API (v2) and pull raw trial records.
 
-This script is deliberately simple and standalone — its only job is to
-confirm the API works, show you the shape of the data, and save a raw
-sample to disk so the next step (ingest.py) has something to work with.
+This version filters for actively recruiting trials at the API level,
+since a real patient matching tool has no use for completed/terminated
+trials — pulling only relevant records here also keeps the downstream
+vector database focused and the reasoning node's job realistic.
 
 Docs: https://clinicaltrials.gov/data-api/api
 
 Run:
-    python src/fetch_trials.py --condition "type 2 diabetes" --max-results 50
+    python src/fetch_trials.py --condition "type 2 diabetes" --max-results 100
 """
 
 import argparse
@@ -20,8 +21,6 @@ import requests
 
 API_BASE = "https://clinicaltrials.gov/api/v2/studies"
 
-# Fields we actually need — asking for only these keeps responses small
-# and fast. Full field list: https://clinicaltrials.gov/data-api/about-api/study-data-structure
 FIELDS = [
     "NCTId",
     "BriefTitle",
@@ -39,10 +38,6 @@ FIELDS = [
 
 
 def fetch_trials(condition: str, max_results: int = 100, page_size: int = 50) -> list[dict]:
-    """
-    Pull trials matching a condition, paging through results until
-    max_results is reached or the API runs out of pages.
-    """
     all_studies = []
     next_page_token = None
 
@@ -52,6 +47,10 @@ def fetch_trials(condition: str, max_results: int = 100, page_size: int = 50) ->
             "fields": ",".join(FIELDS),
             "pageSize": min(page_size, max_results - len(all_studies)),
             "format": "json",
+            # Only pull trials that are actually open to new patients —
+            # this is the fix: without this filter the API returns a mix
+            # of recruiting, completed, and terminated trials by default.
+            "filter.overallStatus": "RECRUITING,NOT_YET_RECRUITING,ENROLLING_BY_INVITATION",
         }
         if next_page_token:
             params["pageToken"] = next_page_token
@@ -69,18 +68,12 @@ def fetch_trials(condition: str, max_results: int = 100, page_size: int = 50) ->
         if not next_page_token:
             break
 
-        # be polite to the API
         time.sleep(0.3)
 
     return all_studies[:max_results]
 
 
 def flatten_study(study: dict) -> dict:
-    """
-    The raw API response nests everything under protocolSection -> module
-    keys. This pulls out just the fields we care about into a flat dict
-    that's much easier to work with downstream.
-    """
     protocol = study.get("protocolSection", {})
     ident = protocol.get("identificationModule", {})
     elig = protocol.get("eligibilityModule", {})
@@ -112,15 +105,10 @@ def main():
     parser = argparse.ArgumentParser(description="Fetch trials from ClinicalTrials.gov")
     parser.add_argument("--condition", type=str, default="type 2 diabetes")
     parser.add_argument("--max-results", type=int, default=100)
-    parser.add_argument(
-        "--out",
-        type=str,
-        default="data/raw_trials.json",
-        help="Where to save the flattened trial records",
-    )
+    parser.add_argument("--out", type=str, default="data/raw_trials.json")
     args = parser.parse_args()
 
-    print(f"Fetching up to {args.max_results} trials for condition: '{args.condition}'...")
+    print(f"Fetching up to {args.max_results} RECRUITING trials for condition: '{args.condition}'...")
     raw_studies = fetch_trials(args.condition, args.max_results)
     print(f"Retrieved {len(raw_studies)} raw records.")
 
@@ -131,8 +119,11 @@ def main():
     out_path.write_text(json.dumps(flattened, indent=2))
     print(f"Saved flattened records to {out_path.resolve()}")
 
-    # quick sanity check — show the first record
     if flattened:
+        statuses = {}
+        for t in flattened:
+            statuses[t["status"]] = statuses.get(t["status"], 0) + 1
+        print(f"\nStatus breakdown: {statuses}")
         print("\n--- Sample record ---")
         print(json.dumps(flattened[0], indent=2)[:1000])
 
