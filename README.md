@@ -42,15 +42,19 @@ cp .env.example .env       # then fill in your ANTHROPIC_API_KEY
 ## Usage so far
 
 **1. Fetch trial data from ClinicalTrials.gov:**
+
 ```bash
 python src/fetch_trials.py --condition "type 2 diabetes" --max-results 100
 ```
+
 This saves flattened trial records to `data/raw_trials.json`.
 
 **2. Ingest into the local vector store:**
+
 ```bash
 python src/ingest.py --input data/raw_trials.json --query "62 year old with type 2 diabetes and heart disease"
 ```
+
 This embeds each trial and stores it in ChromaDB (`data/chroma_db/`),
 then runs a sample semantic search so you can sanity-check retrieval
 quality before building agent logic on top of it.
@@ -69,3 +73,5 @@ quality before building agent logic on top of it.
 ## Tech Stack
 
 LangGraph · Anthropic Claude API · FastAPI · ChromaDB · Streamlit · Docker
+🔗 Live demo: https://medtrial-match-ai-1.onrender.com
+🔗 API: https://medtrial-match-ai.onrender.com
