@@ -1,3 +1,5 @@
+![Tests](https://github.com/Pranit3434/medtrial-match-ai/actions/workflows/test.yml/badge.svg)
+
 # MedTrial-Match AI
 
 An agentic RAG system that matches patient profiles to relevant clinical
@@ -75,3 +77,7 @@ quality before building agent logic on top of it.
 LangGraph · Anthropic Claude API · FastAPI · ChromaDB · Streamlit · Docker
 🔗 Live demo: https://medtrial-match-ai-1.onrender.com
 🔗 API: https://medtrial-match-ai.onrender.com
+
+git add README.md
+git commit -m "Add CI status badge to README"
+git push
