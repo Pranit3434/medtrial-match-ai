@@ -1,0 +1,83 @@
+{
+  "summary": {
+    "total_queries": 10,
+    "queries_with_at_least_one_match": 0,
+    "match_rate": 0.0,
+    "avg_latency_seconds": 7.97,
+    "avg_judge_score": null,
+    "total_matches_judged": 0,
+    "failed_judgments": 0
+  },
+  "results": [
+    {
+      "query": "62 year old female with type 2 diabetes and heart disease, based in Manchester",
+      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m171zrh7en0saqv6ra1b9v5e` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 200000, Requested 475. Please try again in 3m25.2s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "latency": 78.99107217788696,
+      "result_count": 0,
+      "judge_scores": []
+    },
+    {
+      "query": "45 year old male, newly diagnosed type 2 diabetes, no complications",
+      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m171zrh7en0saqv6ra1b9v5e` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199995, Requested 452. Please try again in 3m13.104s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "latency": 0.05613207817077637,
+      "result_count": 0,
+      "judge_scores": []
+    },
+    {
+      "query": "58 year old with obesity and type 2 diabetes, on metformin",
+      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m171zrh7en0saqv6ra1b9v5e` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199990, Requested 375. Please try again in 2m37.68s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "latency": 0.08912920951843262,
+      "result_count": 0,
+      "judge_scores": []
+    },
+    {
+      "query": "70 year old female with long-standing type 2 diabetes and kidney problems",
+      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m171zrh7en0saqv6ra1b9v5e` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199985, Requested 452. Please try again in 3m8.784s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "latency": 0.22453880310058594,
+      "result_count": 0,
+      "judge_scores": []
+    },
+    {
+      "query": "35 year old male with type 2 diabetes, otherwise healthy",
+      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m171zrh7en0saqv6ra1b9v5e` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199980, Requested 450. Please try again in 3m5.76s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "latency": 0.08698511123657227,
+      "result_count": 0,
+      "judge_scores": []
+    },
+    {
+      "query": "50 year old with type 2 diabetes and high blood pressure",
+      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m171zrh7en0saqv6ra1b9v5e` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199975, Requested 450. Please try again in 3m3.6s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "latency": 0.04591512680053711,
+      "result_count": 0,
+      "judge_scores": []
+    },
+    {
+      "query": "28 year old female recently diagnosed with type 2 diabetes during pregnancy screening",
+      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m171zrh7en0saqv6ra1b9v5e` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199971, Requested 452. Please try again in 3m2.736s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "latency": 0.05448293685913086,
+      "result_count": 0,
+      "judge_scores": []
+    },
+    {
+      "query": "65 year old male, type 2 diabetes, history of stroke",
+      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m171zrh7en0saqv6ra1b9v5e` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199966, Requested 451. Please try again in 3m0.144s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "latency": 0.04397296905517578,
+      "result_count": 0,
+      "judge_scores": []
+    },
+    {
+      "query": "40 year old with poorly controlled type 2 diabetes despite medication",
+      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m171zrh7en0saqv6ra1b9v5e` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199961, Requested 373. Please try again in 2m24.288s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "latency": 0.06391000747680664,
+      "result_count": 0,
+      "judge_scores": []
+    },
+    {
+      "query": "55 year old female with type 2 diabetes, interested in lifestyle intervention trials",
+      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m171zrh7en0saqv6ra1b9v5e` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199956, Requested 453. Please try again in 2m56.688s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "latency": 0.03972887992858887,
+      "result_count": 0,
+      "judge_scores": []
+    }
+  ]
+}
