@@ -42,18 +42,29 @@ LLM_MODEL = "openai/gpt-oss-120b"
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 
-def call_llm(prompt: str, max_tokens: int) -> str:
+def call_llm(prompt: str, max_tokens: int, retries: int = 3) -> str:
     """
     Thin wrapper so the rest of the file doesn't need to know which
-    provider is behind it — swap this one function if you ever want to
-    try Anthropic, OpenAI, or a local model instead.
+    provider is behind it. Retries on transient connection errors,
+    which happen occasionally on free-tier hosting reaching an
+    external API — a single blip shouldn't fail the whole request.
     """
-    response = client.chat.completions.create(
-        model=LLM_MODEL,
-        max_tokens=max_tokens,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    return response.choices[0].message.content.strip()
+    import time
+    last_error = None
+    for attempt in range(retries):
+        try:
+            response = client.chat.completions.create(
+                model=LLM_MODEL,
+                max_tokens=max_tokens,
+                messages=[{"role": "user", "content": prompt}],
+                timeout=30,
+            )
+            return response.choices[0].message.content.strip()
+        except Exception as e:
+            last_error = e
+            if attempt < retries - 1:
+                time.sleep(2 * (attempt + 1))
+    raise last_error
 
 
 # ---------------------------------------------------------------------------
