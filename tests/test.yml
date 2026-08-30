@@ -1,0 +1,60 @@
+# .github/workflows/test.yml
+#
+# WHAT THIS FILE DOES:
+# GitHub Actions reads this file automatically — you never "run" it
+# yourself. Every time you push code (or open a pull request) to this
+# repo, GitHub spins up a clean virtual machine, follows these steps
+# one by one, and reports pass/fail right on your commit and on GitHub's
+# website. This is what "CI" (Continuous Integration) means: your tests
+# run automatically, on every change, without you remembering to do it.
+#
+# WHY THIS MATTERS FOR YOUR CV:
+# It's the difference between "I wrote some code" and "I have an
+# automated safety net that catches regressions before they reach
+# production" — a real engineering practice, not just a nice-to-have.
+
+name: Run Tests
+
+# This section says WHEN this workflow should run.
+on:
+  push:
+    branches: [main]        # run whenever you push to main
+  pull_request:
+    branches: [main]        # also run on any pull request targeting main
+
+jobs:
+  test:
+    # GitHub gives us a fresh Ubuntu virtual machine to run in — this is
+    # NOT your computer, it's a brand new environment with nothing on it
+    # except what these steps install.
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Copy your repository's code onto this fresh machine.
+      # Without this, the VM would be completely empty — no src/, no
+      # tests/, nothing to test.
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # Step 2: Install Python. We pin the version (3.11) so this
+      # behaves the same way every time, rather than whatever version
+      # GitHub happens to default to.
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Step 3: Install everything your project needs to run, plus
+      # pytest itself (which isn't in requirements.txt since it's only
+      # needed for testing, not for the app to actually work).
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      # Step 4: Actually run the tests. If any test fails, this step
+      # fails, which makes the whole workflow show a red X on GitHub —
+      # that's the visible signal that something broke.
+      - name: Run test suite
+        run: pytest tests/ -v
