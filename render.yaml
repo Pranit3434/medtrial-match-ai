@@ -1,0 +1,28 @@
+# render.yaml — Render "Blueprint" for deploying both services at once.
+# On Render: New -> Blueprint -> connect this repo -> it reads this file
+# and creates both services automatically. You'll still need to set
+# GROQ_API_KEY manually in the dashboard (never commit real secrets here).
+
+services:
+  - type: web
+    name: medtrial-match-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile.api
+    plan: free
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false  # set this manually in the Render dashboard
+      - key: CHROMA_DB_PATH
+        value: ./data/chroma_db
+
+  - type: web
+    name: medtrial-match-ui
+    runtime: docker
+    dockerfilePath: ./Dockerfile.app
+    plan: free
+    envVars:
+      - key: API_URL
+        fromService:
+          type: web
+          name: medtrial-match-api
+          property: hostport

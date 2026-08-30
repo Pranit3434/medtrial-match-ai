@@ -1,0 +1,21 @@
+# Dockerfile.api — builds the FastAPI backend service
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install dependencies first (separate layer) so Docker can cache this
+# step and skip reinstalling every time only the source code changes.
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy source code and the pre-built vector database — the API needs
+# data/chroma_db/ to exist at runtime for retrieval to work.
+COPY src/ ./src/
+COPY data/chroma_db/ ./data/chroma_db/
+
+WORKDIR /app/src
+
+EXPOSE 8000
+
+# Render/Railway inject a PORT env var — default to 8000 for local runs.
+CMD ["sh", "-c", "uvicorn api:app --host 0.0.0.0 --port ${PORT:-8000}"]
